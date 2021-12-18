@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 let categoryShcema = mongoose.Schema({
     name: {
         type: String,
-        require: [true, 'Nama kategori harus di isi']
+        require: [true, 'Category name must be filled']
     }
 })
 
