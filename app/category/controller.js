@@ -14,7 +14,11 @@ module.exports = {
 
     viewCreate: async (req, res) => {
         try {
-            res.render('admin/category/create')
+            const data1 = await res.render('admin/category/create');
+            const data2 = await res.render('admin/category/view_category');
+
+            console.log("data >>>>", data1);
+            console.log("data >>>>", data2);
         } catch (error) {
             console.log(error);
         }
