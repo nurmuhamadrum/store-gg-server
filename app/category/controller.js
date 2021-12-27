@@ -3,8 +3,11 @@ const Category = require('./model')
 module.exports = {
     index: async (req, res) => {
         try {
-            const alertMessage = req.flash('alertMessage')
-            const alertStatus = req.flash('alertStatus')
+            // const alertMessage = req.flash('alertMessage')
+            // const alertStatus = req.flash('alertStatus')
+            const alertMessage = 'alertMessageHere'
+            const alertStatus = false
+            
             const alert = { message: alertMessage, status: alertStatus }
             const category = await Category.find();
 
@@ -14,8 +17,8 @@ module.exports = {
             })
             
         } catch (error) {
-            req.flash('alertMerssage', `${error.message}`)
-            req.flash('alertStatus', 'danger')
+            // req.flash('alertMessage', `${error.message}`)
+            // req.flash('alertStatus', 'danger')
             res.redirect('/category');
         }
     },
@@ -25,8 +28,8 @@ module.exports = {
             await res.render('admin/category/create');
 
         } catch (error) {
-            req.flash('alertMerssage', `${error.message}`)
-            req.flash('alertStatus', 'danger')
+            // req.flash('alertMessage', `${error.message}`)
+            // req.flash('alertStatus', 'danger')
             res.redirect('/category');
         }
     },
@@ -37,13 +40,13 @@ module.exports = {
             let category = await Category({ name });
             await category.save();
 
-            req.flash('alertMessage', 'Successfully added category');
-            req.flash('alertStatus', 'success')
+            // req.flash('alertMessage', 'Successfully added category');
+            // req.flash('alertStatus', 'success')
             res.redirect('/category');
 
         } catch (error) {
-            req.flash('alertMerssage', `${error.message}`)
-            req.flash('alertStatus', 'danger')
+            // req.flash('alertMessage', `${error.message}`)
+            // req.flash('alertStatus', 'danger')
             res.redirect('/category');;
         }
     },
@@ -58,8 +61,8 @@ module.exports = {
             });
 
         } catch (error) {
-            req.flash('alertMerssage', `${error.message}`)
-            req.flash('alertStatus', 'danger')
+            // req.flash('alertMessage', `${error.message}`)
+            // req.flash('alertStatus', 'danger')
             res.redirect('/category');
         }
     },
@@ -73,13 +76,13 @@ module.exports = {
                 _id: id
             }, { name });
 
-            req.flash('alertMessage', 'Successfully edit category');
-            req.flash('alertStatus', 'success')
+            // req.flash('alertMessage', 'Successfully edit category');
+            // req.flash('alertStatus', 'success')
             res.redirect('/category');
 
         } catch (error) {
-            req.flash('alertMerssage', `${error.message}`)
-            req.flash('alertStatus', 'danger')
+            // req.flash('alertMessage', `${error.message}`)
+            // req.flash('alertStatus', 'danger')
             res.redirect('/category');
         }
     },
@@ -92,13 +95,13 @@ module.exports = {
                 _id: id
             });
 
-            req.flash('alertMessage', 'Successfully delete category');
-            req.flash('alertStatus', 'success')
+            // req.flash('alertMessage', 'Successfully delete category');
+            // req.flash('alertStatus', 'success')
             res.redirect('/category');
 
         } catch (error) {
-            req.flash('alertMerssage', `${error.message}`)
-            req.flash('alertStatus', 'danger')
+            // req.flash('alertMessage', `${error.message}`)
+            // req.flash('alertStatus', 'danger')
             res.redirect('/category');
         }
     }
