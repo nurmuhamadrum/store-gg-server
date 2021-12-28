@@ -5,7 +5,7 @@
             <th>Nama Game </th>
             <th>Kategori</th>
             <th>Nominal</th>
-            <th>Gambar</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -14,13 +14,44 @@
             <tr>
                 <td><%= i + 1 %></td>
                 <td><%= voucher[i].name %></td>
+                <td><%= voucher[i].category ? voucher[i].category.name : '-' %></td>
                 <td>
-                    <form action="/voucher/delete/<%= voucher[i]._id%>?_method=delete" method="post">
-                        <a href="/voucher/edit/<%= voucher[i]._id%>" class="btn btn-warning">
-                            <i class="fas fa-pencil-alt"></i>
-                            Edit
-                        </a>
-                        <button class="btn btn-danger">
+                    <% voucher[i].nominals.forEach(nominal => { %>
+                        <span class="badge badge-warning">
+                            <%= nominal.coinName %> <%= nominal.coinQuantity %> 
+                        </span>
+                    <% }) %>
+                </td>
+
+                <td>
+                    <% if(voucher[i].status === 'Y') { %>
+                        <span class="badge badge-success">
+                            Aktif
+                        </span>
+                    <% } else { %>
+                        <span class="badge badge-danger">
+                            Non-Aktif
+                        </span>
+                    <% } %>
+                </td>
+
+                <td>
+                    <form action="/voucher/status/<%= voucher[i]._id%>?_method=put" method="post" style="display: inline-block;">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-dot-circle"></i>
+                            <% if(voucher[i].status === 'Y') { %>
+                                Matikan
+                            <% } else { %>
+                                Hidupkan
+                            <% } %>
+                        </button>
+                    </form>
+                    <a href="/voucher/edit/<%= voucher[i]._id%>" class="btn btn-info btn-sm">
+                        <i class="fas fa-pencil-alt"></i>
+                        Edit
+                    </a>
+                    <form action="/voucher/delete/<%= voucher[i]._id%>?_method=delete" method="post" style="display: inline-block;">
+                        <button class="btn btn-danger  btn-sm">
                             <i class="fas fa-trash"></i>
                             Delete
                         </button>

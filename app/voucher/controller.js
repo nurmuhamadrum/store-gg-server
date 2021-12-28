@@ -16,8 +16,6 @@ module.exports = {
             .populate('category')
             .populate('nominals')
 
-            
-
             res.render('admin/voucher/view_voucher', {
                 voucher,
                 alert
@@ -70,7 +68,7 @@ module.exports = {
 
                         res.redirect('/voucher');
                     } catch (error) {
-                        res.redirect('/nominal');
+                        res.redirect('/voucher');
                     }
                 })
             } else {
@@ -85,51 +83,116 @@ module.exports = {
                 res.redirect('/voucher');
             }
         } catch (error) {
-            res.redirect('/nominal');;
+            res.redirect('/voucher');;
         }
     },
 
-    // viewEdit: async (req, res) => {
-    //     try {
-    //         const { id } = req.params;
-    //         const nominal = await Nominal.findOne({ _id: id });
+    viewEdit: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const category = await Category.find()
+            const nominal = await Nominal.find()
+            const voucher = await Voucher.findOne({ _id: id })
+            .populate('category')
+            .populate('nominals')
 
-    //         res.render('admin/nominal/edit', {
-    //             nominal
-    //         });
+            res.render('admin/voucher/edit', {
+                voucher,
+                nominal,
+                category
+            });
 
-    //     } catch (error) {
-    //         res.redirect('/nominal');
-    //     }
-    // },
+        } catch (error) {
+            res.redirect('/voucher');
+        }
+    },
 
-    // actionEdit: async (req, res) => {
-    //     try {
-    //         const { id } = req.params;
-    //         const { coinName, coinQuantity, price } = req.body;
+    actionEdit: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { name, category, nominals } = req.body;
 
-    //         await Nominal.findByIdAndUpdate({
-    //             _id: id
-    //         }, { coinName, coinQuantity, price });
+            if (req.file) {
+                let tmp_path = req.file.path;
+                let originalExt = req.file.originalname.split('.')[req.file.originalname.split('.').length - 1]
+                let filename = req.file.filename + '.' + originalExt;
+                let target_path = path.resolve(config.rootPath, `public/uploads/${filename}`)
+                const src = fs.createReadStream(tmp_path);
+                const dest = fs.createWriteStream(target_path)
 
-    //         res.redirect('/nominal');
+                src.pipe(dest)
 
-    //     } catch (error) {
-    //         res.redirect('/nominal');
-    //     }
-    // },
+                src.on('end', async () => {
+                    try {
 
-    // actionDelete: async (req, res) => {
-    //     try {
-    //         const { id } = req.params;
+                        const voucher = await Voucher.findOne({ _id: id })
 
-    //         await Nominal.findByIdAndRemove({
-    //             _id: id
-    //         });
+                        let currentImage = `${config.rootPath}/public/uploads/${voucher.thumbnail}`;
+                        if (fs.existsSync(currentImage)) {
+                            fs.unlinkSync(currentImage)
+                        }
 
-    //         res.redirect('/nominal');
-    //     } catch (error) {
-    //         res.redirect('/nominal');
-    //     }
-    // }
+                        await Voucher.findOneAndUpdate({
+                            _id: id
+                        }, {
+                            name,
+                            category,
+                            nominals,
+                            thumbnail: filename
+                        })
+
+                        res.redirect('/voucher');
+                    } catch (error) {
+                        res.redirect('/voucher');
+                    }
+                })
+            } else {
+                await Voucher.findOneAndUpdate({
+                    _id: id
+                }, {
+                    name,
+                    category,
+                    nominals
+                })
+                res.redirect('/voucher');
+            }
+        } catch (error) {
+            res.redirect('/voucher');
+        }
+    },
+
+    actionDelete: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const voucher = await Voucher.findByIdAndRemove({
+                _id: id
+            });
+
+            let currentImage = `${config.rootPath}/public/uploads/${voucher.thumbnail}`;
+            if (fs.existsSync(currentImage)) {
+                fs.unlinkSync(currentImage)
+            }
+
+            res.redirect('/voucher');
+        } catch (error) {
+            res.redirect('/voucher');
+        }
+    },
+
+    actionStatus: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const voucher = await Voucher.findOne({
+                _id: id
+            })
+            let status = voucher.status === 'Y' ? 'N' : 'Y'
+
+            voucher = await Voucher.findOneAndUpdate({
+                _id: id
+            }, { status })
+        } catch (error) {
+            res.redirect('/voucher');
+        }
+    }
 }
