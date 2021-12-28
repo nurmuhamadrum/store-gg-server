@@ -5,7 +5,7 @@ module.exports = {
         try {
             const alertMessage = ''
             const alertStatus = false
-            
+
             const alert = { message: alertMessage, status: alertStatus }
             const nominal = await Nominal.find();
 
@@ -13,7 +13,7 @@ module.exports = {
                 nominal,
                 alert
             })
-            
+
         } catch (error) {
             res.redirect('/nominal');
         }

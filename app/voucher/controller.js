@@ -10,17 +10,17 @@ module.exports = {
         try {
             const alertMessage = ''
             const alertStatus = false
-            
+
             const alert = { message: alertMessage, status: alertStatus }
             const voucher = await Voucher.find()
-            .populate('category')
-            .populate('nominals')
+                .populate('category')
+                .populate('nominals')
 
             res.render('admin/voucher/view_voucher', {
                 voucher,
                 alert
             })
-            
+
         } catch (error) {
             res.redirect('/voucher');
         }
@@ -93,8 +93,8 @@ module.exports = {
             const category = await Category.find()
             const nominal = await Nominal.find()
             const voucher = await Voucher.findOne({ _id: id })
-            .populate('category')
-            .populate('nominals')
+                .populate('category')
+                .populate('nominals')
 
             res.render('admin/voucher/edit', {
                 voucher,

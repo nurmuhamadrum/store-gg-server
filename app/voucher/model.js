@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 let nominalShcema = mongoose.Schema({
     name: {
         type: String,
-        require:[true, 'Nama game harus di isi']
+        require: [true, 'Nama game harus di isi']
     },
     status: {
         type: String,

@@ -7,7 +7,7 @@ module.exports = {
             // const alertStatus = req.flash('alertStatus')
             const alertMessage = 'alertMessageHere'
             const alertStatus = false
-            
+
             const alert = { message: alertMessage, status: alertStatus }
             const category = await Category.find();
 
@@ -15,7 +15,7 @@ module.exports = {
                 category,
                 alert
             })
-            
+
         } catch (error) {
             // req.flash('alertMessage', `${error.message}`)
             // req.flash('alertStatus', 'danger')
