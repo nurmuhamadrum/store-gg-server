@@ -31,8 +31,8 @@ module.exports = {
     actionCreate: async (req, res) => {
         try {
             const { name, nameBank, nomorRekening } = req.body;
-            let bank = await Bank({ name, nameBank, nomorRekening });
-            await bank.save();
+            let banks = await Bank({ name, nameBank, nomorRekening });
+            await banks.save();
 
             res.redirect('/bank');
         } catch (error) {
