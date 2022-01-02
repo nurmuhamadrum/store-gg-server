@@ -10,8 +10,6 @@ module.exports = {
             const alert = { message: alertMessage, status: alertStatus }
             const payment = await Payment.find().populate('banks')
 
-            console.log("==>>>> payment", payment);
-
             res.render('admin/payment/view_payment', {
                 payment,
                 alert
@@ -37,6 +35,7 @@ module.exports = {
     actionCreate: async (req, res) => {
         try {
             const { banks, type } = req.body;
+
             let payment = await Payment({ banks, type });
             await payment.save();
 
@@ -49,7 +48,7 @@ module.exports = {
     viewEdit: async (req, res) => {
         try {
             const { id } = req.params;
-            const payment = await Payment.findOne({ _id: id });
+            const payment = await Payment.findOne({ _id: id }).populate('banks')
 
             res.render('admin/payment/edit', {
                 payment
@@ -60,33 +59,33 @@ module.exports = {
         }
     },
 
-    // actionEdit: async (req, res) => {
-    //     try {
-    //         const { id } = req.params;
-    //         const { coinName, coinQuantity, price } = req.body;
+    actionEdit: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { banks, type } = req.body;
 
-    //         await Nominal.findByIdAndUpdate({
-    //             _id: id
-    //         }, { coinName, coinQuantity, price });
+            await Payment.findByIdAndUpdate({
+                _id: id
+            }, { banks, type });
 
-    //         res.redirect('/nominal');
+            res.redirect('/payment');
 
-    //     } catch (error) {
-    //         res.redirect('/nominal');
-    //     }
-    // },
+        } catch (error) {
+            res.redirect('/payment');
+        }
+    },
 
-    // actionDelete: async (req, res) => {
-    //     try {
-    //         const { id } = req.params;
+    actionDelete: async (req, res) => {
+        try {
+            const { id } = req.params;
 
-    //         await Nominal.findByIdAndRemove({
-    //             _id: id
-    //         });
+            await Payment.findByIdAndRemove({
+                _id: id
+            });
 
-    //         res.redirect('/nominal');
-    //     } catch (error) {
-    //         res.redirect('/nominal');
-    //     }
-    // }
+            res.redirect('/payment');
+        } catch (error) {
+            res.redirect('/payment');
+        }
+    }
 }

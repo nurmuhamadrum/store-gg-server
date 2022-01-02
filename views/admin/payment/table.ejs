@@ -14,11 +14,21 @@
                 <td><%= i + 1 %></td>
                 <td><%= payment[i].type %></td>
                 <td>
-                    <% payment[i].banks.forEach(bank => { %>
-                        <span class="badge badge-warning">
-                            <%= bank.name %> <%= bank.nameBank %> <%= bank.nomorRekening %>
-                        </span>
-                    <% }) %>
+                    <% if (payment[i].banks) { %>
+                        <% payment[i].banks.forEach(bank => { %>
+                            <span class="badge badge-warning"
+                                <% payment[i].banks.forEach(paymentBank => { %>
+                                    <% if(bank._id.toString === paymentBank._id.toString) { %>
+                                        selected
+                                    <% } %>
+                                <% }) %>
+                            >
+                                <%= bank.name %> <%= bank.nameBank %> <%= bank.nomorRekening %>
+                            </span>
+                        <% }) %>
+                    <% } else { %>
+                        -
+                    <% } %>
                 </td>
                 <td>
                     <% if(payment[i].status === 'Y') { %>
